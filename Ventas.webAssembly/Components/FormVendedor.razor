@@ -1,11 +1,14 @@
 ﻿@inject NavigationManager navigationManager
 @inject RepresentantesService RepService
+@inject SucursalesService sucursalesService;
+@inject JefesService jefesService;
+
 
 <EditForm Model="@oVentasEmpleado" OnValidSubmit="@guardar">
     <DataAnnotationsValidator />
     <div class="mt-3">
         <label>Numero de Empleado</label>
-        <InputNumber class="form-control" @bind-Value="oVentasEmpleado.IdEmpleado" disabled ="@EsEditable" />
+        <InputNumber class="form-control" @bind-Value="oVentasEmpleado.IdEmpleado" disabled ="true" />
         <ValidationMessage For="(() => oVentasEmpleado.IdEmpleado)" />
     </div>
     <div class="mt-3">
@@ -37,6 +40,31 @@
         <ValidationMessage For="(() => oVentasEmpleado.Cuota)" />
     </div>
     <div class="mt-3">
+        <label>Sucursal</label>
+        <InputSelect class="form-control" @bind-Value="oVentasEmpleado.idSucursales">
+            @foreach (var item in listSucursales)
+            {
+                <option value="@item.Id">@sucursalesService.getNombre(item.Id)</option>                
+            }
+        </InputSelect>
+        <ValidationMessage For="(() => oVentasEmpleado.IdEmpleado)" />
+    </div>
+    <div class="mt-3">
+        <label>Jefe</label>
+        <InputSelect class="form-control" @bind-Value="oVentasEmpleado.idJefe">
+            @foreach (var item in listJefes)
+            {
+                <option value="@item.idJefe">@jefesService.getNombre(item.idJefe)</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="(() => oVentasEmpleado.Cuota)" />
+    </div>
+    <div class="mt-3">
+        <label>Cuota</label>
+        <InputNumber class="form-control" @bind-Value="oVentasEmpleado.Cuota" />
+        <ValidationMessage For="(() => oVentasEmpleado.Cuota)" />
+    </div>
+    <div class="mt-3">
         <label>Ventas</label>
         <InputNumber class="form-control" @bind-Value="oVentasEmpleado.Ventas" />
         <ValidationMessage For="(() => oVentasEmpleado.Ventas)" />
@@ -51,12 +79,16 @@
     [Parameter ]
     public int idVendedor { get; set; } 
     public oVentas oVentasEmpleado { get; set; } = new oVentas();
+    public List<Jefes> listJefes = new List<Jefes>();
+    public List<Sucursales> listSucursales = new List<Sucursales>();
     public bool EsEditable { get; set; } = false;
 
     protected override void OnInitialized()
     {
-        
-        oVentasEmpleado = RepService.ObtenerRepresentante(idVendedor);   
+
+        oVentasEmpleado = RepService.ObtenerRepresentante(idVendedor);
+        listJefes = jefesService.GetJefes();
+        listSucursales = sucursalesService.getSucursales();
         EsEditable = idVendedor != 0;
         if (oVentasEmpleado.FechaContrato == default)
         {

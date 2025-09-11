@@ -6,7 +6,7 @@ namespace Ventas.BlazorEntities
     public class oVentas
     {
         [Required(ErrorMessage = "El Numero del empleado no es valido")]
-        [Range(1, int.MaxValue, ErrorMessage = "El Numero del empleado debe ser mayor que 0")]
+        [Range(0, int.MaxValue, ErrorMessage = "El Numero del empleado debe ser mayor que 0")]
         public int IdEmpleado { get; set; }
 
         [Required(ErrorMessage = "El Nombre del empleado es requerido")]
@@ -32,5 +32,7 @@ namespace Ventas.BlazorEntities
         [Required(ErrorMessage = "Las ventas del empleado son requeridas")]
         [Range(0, int.MaxValue, ErrorMessage = "Las ventas deben ser un número positivo")]
         public int Ventas { get; set; } = -1;
+        public int idSucursales { get; set; }
+        public int idJefe { get; set; }
     }
 }
