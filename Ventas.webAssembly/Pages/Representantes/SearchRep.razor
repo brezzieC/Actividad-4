@@ -1,0 +1,50 @@
+﻿@inject RepresentantesService RepService;
+
+<div class="input-group mt-3 mb-3">
+    <input type="text" class="form-control" placeholder="Ingrese el nombre del representante"
+           @bind-value="nombretitulo"
+           @bind-value:event="oninput">
+    <button @onclick="buscar" class="btn btn-outline-dark" type="button">Buscar</button>
+    <button @onclick="limpiar" class="btn btn-outline-danger" type="button">Limpiar</button>
+</div>
+@code {
+    public string nombretitulo { get; set; } = string.Empty;
+    //MODIFICADO HOY ---
+    private async Task limpiar()
+    {
+        nombretitulo = string.Empty;
+        await RepService.notificarbusqueda(nombretitulo);
+    }
+    private async Task buscar()
+    {
+        await RepService.notificarbusqueda(nombretitulo);
+    }
+    // ------------
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

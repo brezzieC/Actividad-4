@@ -1,9 +1,19 @@
 ﻿using Ventas.BlazorEntities;
+using Ventas.webAssembly.Pages.Representantes;
 
 namespace Ventas.webAssembly.Services
 {
     public class RepresentantesService
     {
+        public event Func<string, Task> OnSearch = delegate { return Task.CompletedTask; };
+        public async Task notificarbusqueda(string titulolibro)
+        {
+            if (OnSearch != null)
+            {
+                await OnSearch.Invoke(titulolibro);
+            }
+        }
+        //-----------
         public List<oVentas> listaRep;
         public RepresentantesService()
         {
@@ -27,6 +37,21 @@ namespace Ventas.webAssembly.Services
             else
             {
                 return new oVentas();
+            }
+        }
+
+        //MODIFICADO HOY ---------------
+        public List<oVentas> filtrarLibros(string nombretitulo)
+        {
+            List<oVentas> l = GetRepresentantes(); //VER
+            if (nombretitulo == "")
+            {
+                return l;
+            }
+            else
+            {
+                List<oVentas> listafiltrada = l.Where(p => p.Nombre.ToUpper().Contains(nombretitulo.ToUpper())).ToList();
+                return listafiltrada;
             }
         }
         public void EliminarRepresentante(int id)

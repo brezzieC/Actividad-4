@@ -6,6 +6,8 @@
 <h3>Representantes de Ventas</h3>
 <button @onclick="navegar" class="btn btn-primary">Nuevo</button>
 
+<SearchRep/>
+
 @if (lista != null && lista.Count != 0)
 {
     <table class="table">
@@ -52,6 +54,7 @@ else
 }
 
 @code {
+
     public List<oVentas>? lista { get; set; }
 
     private string obtenerJefe(int id){
@@ -64,9 +67,17 @@ else
 
     protected override Task OnInitializedAsync()
     {
-        lista = new List<oVentas>();
+
+        RepService.OnSearch += filtrar;
+        //lista = new List<oVentas>();
         listarLibros();
         return base.OnInitializedAsync();
+    }
+    private Task filtrar(string titulo)
+    {
+        lista = RepService.filtrarLibros(titulo);
+        StateHasChanged();
+        return Task.CompletedTask;
     }
     private void navegar()
     {
